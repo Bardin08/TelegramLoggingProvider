@@ -69,21 +69,24 @@ var factory = LoggerFactory.Create(builder =>
 
 var logger = factory.CreateLogger<ExampleClass>();
 
-for (var i = 0; i < 2; i++)
-{
-    try
-    {
-        throw new SystemException("Error description");
-    }
-    catch (Exception exception)
-    {
-        logger.LogError(exception.Message);
-    }
-
-    Task.WaitAll(Task.Delay(500));
-}
-
 ```
+
+or 
+
+```csharp
+var builder = new ConfigurationBuilder();
+var config = builder.SetBasePath(Directory.GetCurrentDirectory())
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    .Build();
+
+var factory = LoggerFactory.Create(builder =>
+{
+    builder.ClearProviders()
+        .AddTelegram(config);
+});
+```
+For more examples visit the examples\` directory
+
 
 #### Log example
 
